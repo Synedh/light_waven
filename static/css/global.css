@@ -1,0 +1,373 @@
+body {
+    margin: 0;
+    font-family: sans-serif;
+    font-size: 16px;
+}
+
+.chat {
+    width: 200px;
+    height: 350px;
+    margin: 10px;
+
+    position: absolute;
+    right: 0;
+    bottom: 0;
+}
+
+.game-wrapper {
+    position: absolute;
+    width: 650px;
+    height: 650px;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+}
+
+/** CHATBOX **/
+.chatbox {
+    display: flex;
+    flex-direction: column;
+    border: 1px solid black;
+    height: 100%;
+    width: 100%;
+}
+
+.tabs-wrapper {
+    display: flex;
+    font-size: 15px;
+    border-bottom: 1px solid black;
+}
+
+.tabs-wrapper button {
+    flex: 0 0 auto;
+    padding: 0 5px 0 5px;
+    height: 100%;
+    border: none;
+    background: none;
+}
+
+.tabs-wrapper .left_buttons {
+    flex: 0;
+    display: flex;
+}
+
+.tabs-wrapper .left_buttons * {
+    border-right: 1px solid black;
+    padding-bottom: 1px;
+}
+
+.tabs-wrapper .right_buttons {
+    flex: 0;
+    display: flex;
+}
+
+.tabs-wrapper .right_buttons * {
+    border-left: 1px solid black;
+    padding-bottom: 1px;
+}
+
+.tabs-wrapper button:hover {
+    cursor: pointer;
+}
+
+.tabs-wrapper .tabs {
+    flex: 1;
+    display: flex;
+    overflow: hidden;
+}
+
+.tabs-wrapper .tabs .tab {
+    display: flex;
+    border-right: 1px solid black;
+}
+
+.tabs-wrapper .tabs .tab.current {
+    background-color: lightgrey;
+}
+
+.tabs-wrapper .tabs .tab .name {
+    padding: 0 5px 0 5px; 
+}
+
+.tabs-wrapper .tabs .tab .close {
+    padding: 0 5px 1px 0;
+    height: 100%;
+    border: none;
+    background: none;
+}
+
+.messages-wrapper {
+    flex: 1;
+    display: flex;
+    overflow: auto;
+}
+
+.messages {
+    padding: 3px;
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+}
+
+.messages .message {
+    padding: 2px;
+    overflow-wrap: break-word;
+}
+
+.messages .message:first-child {
+    border: none;
+}
+
+.typebox {
+    display: flex;
+    border-top: 1px solid black;
+}
+
+.typebox input {
+    padding: 5px;
+    width: 100%;
+    border: none;
+    font-family: inherit;
+    font-size: inherit;
+}
+
+/* GAME BOARD */
+.game {
+    width: 100%;
+    height: 100%;
+
+    position: relative;
+    border: 1px solid black;
+}
+
+.opponent_board {
+    position: absolute;
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+.opponent_board .action_points {
+    position: absolute;
+    top: 5px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 100px;
+    border: 1px solid black;
+    text-align: center;
+}
+
+.opponent_board .opponent_wrapper {
+    position: absolute;
+    top: 30px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    justify-content: center;
+}
+
+.opponent_board .opponent_wrapper .deck {
+    width: 45px;
+    height: 60px;
+    border: 1px solid black;
+    border-radius: 5px;
+    margin: 5px;
+}
+
+.opponent_board .opponent_wrapper .cards {
+    display: flex;
+    margin: 0 15px 0 15px;
+}
+
+.card {
+    width: 45px;
+    height: 60px;
+    border: 1px solid black;
+    border-radius: 5px;
+    margin: 5px;
+    position: relative;
+}
+
+.card .card_back {
+    position: absolute;
+    transform: rotateZ(45deg);
+    top: 20px;
+    left: -2px;
+    font-size: 15px;
+}
+
+.opponent_board .opponent_wrapper .deck .card {
+    margin: 0.1px;
+}
+
+.opponent_board .opponent_wrapper .storage {
+    width: 45px;
+    height: 45px;
+    border: 1px solid black;
+    border-radius: 5px;
+    margin: 10px 5px 5px 5px;
+}
+
+.opponent_board .opponent_wrapper .storage .storage_value {
+    text-align: center;
+    padding-top: 7px;
+    font-size: 25px;
+}
+
+.spell_history {
+    position: absolute;
+    left: 20px;
+    top: 50%;
+    transform: translateY(-50%);
+
+    height: 300px;
+    border: 1px solid black;
+    border-radius: 10px;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 5px;
+    overflow: hidden;
+}
+
+.spell_history .used_spell {
+    width: 40px;
+    min-height: 40px;
+    margin: 5px;
+    border: 1px solid black;
+    border-radius: 5px;
+}
+
+.game_board {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+
+    display: flex;
+    flex-direction:column;
+    border: 1px solid black;
+    padding: 10px;
+    border-radius: 10px;
+}
+
+.game_board .row {
+    display: flex; 
+    width: 420px;
+    height: 60px;
+    border-top: 1px solid black;
+}
+
+.game_board .row:last-child {
+    border-bottom: 1px solid black;
+}
+
+.game_board .row .cell {
+    width: 60px;
+    height: 60px;
+    border-left: 1px solid black;
+}
+
+.game_board .row .cell:last-child {
+    border-right: 1px solid black;
+}
+
+.timeline {
+    position: absolute;
+    right: 65px;
+    top: 50%;
+    transform: translateY(-50%);
+
+    height: 300px;
+
+    display: flex;
+    flex-direction: column;
+    border: 1px solid black;
+    border-radius: 10px;
+    background-color: orange;
+}
+
+.timeline .duration {
+    flex: 1;
+    border-bottom: 1px solid black;
+    border-radius: 10px;
+    width: 100%;
+    background-color: white;
+}
+
+.timeline .duration .duration_bar {
+    border-radius: 10px;
+    width: 100%;
+    height: 20%;
+    background-color: lightgrey;
+}
+
+.timeline .end_turn {
+    border: none;
+    background: none;
+    color: white;
+    font-size: 20px;
+    padding: 0 4px 0 4px;
+}
+
+.timeline .end_turn:hover {
+    flex: 0;
+    cursor: pointer;
+}
+
+.player_board {
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+}
+.player_board .action_points {
+    position: absolute;
+    bottom: 5px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 100px;
+    border: 1px solid black;
+    text-align: center;
+}
+
+.player_board .player_wrapper {
+    position: absolute;
+    bottom: 30px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    justify-content: center;
+}
+
+.player_board .player_wrapper .deck {
+    width: 45px;
+    height: 60px;
+    border: 1px solid black;
+    border-radius: 5px;
+    margin: 5px;
+}
+
+.player_board .player_wrapper .cards {
+    display: flex;
+    margin: 0 15px 0 15px;
+}
+
+.player_board .player_wrapper .deck .card {
+    margin: 0.1px;
+}
+
+.player_board .player_wrapper .storage {
+    width: 45px;
+    height: 45px;
+    border: 1px solid black;
+    border-radius: 5px;
+    margin: 10px 5px 5px 5px;
+}
+
+.player_board .player_wrapper .storage .storage_value {
+    text-align: center;
+    padding-top: 7px;
+    font-size: 25px;
+}

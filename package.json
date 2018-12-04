@@ -1,0 +1,29 @@
+{
+  "name": "light_waven",
+  "version": "1.0.0",
+  "description": "A light custom version of 1v1 waven game.",
+  "main": "app.js",
+  "scripts": {
+    "start": "nodemon -e js,html,css app.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Synedh/light_waven.git"
+  },
+  "author": "Synedh",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Synedh/light_waven/issues"
+  },
+  "homepage": "https://github.com/Synedh/light_waven#readme",
+  "devDependencies": {
+    "nodemon": "^1.18.4"
+  },
+  "dependencies": {
+    "body-parser": "^1.18.3",
+    "express": "^4.16.4",
+    "mongoose": "^5.3.14",
+    "nunjucks": "^3.1.4"
+  }
+}
