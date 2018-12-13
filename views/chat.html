@@ -1,26 +1,25 @@
-<div class="chatbox">
+<div id="chatbox" class="chatbox">
     <div class="tabs-wrapper">
         <div class="left_buttons">
-            <button class="left"><</button>
+            <button class="left" onclick="slide_left()"><</button>
         </div>
         <div class="tabs">
-            <div class="tab current">
+            <div class="tab current" onclick="select_tab(0)">
                 <div class="name">Général</div>
-                <button class="close">X</button>
             </div>
-            <div class="tab">
+            <div class="tab" onclick="select_tab(1)">
                 <div class="name">Personne</div>
-                <button class="close">X</button>
+                <button class="close" onclick="close_tab(1)">X</button>
             </div>
-            <div class="tab">
+            <div class="tab" onclick="select_tab(2)">
                 <div class="name">KKun</div>
-                <button class="close">X</button>
+                <button class="close" onclick="close_tab(2)">X</button>
             </div>
         </div>
         <div class="right_buttons">
-            <button class="right">></button>
-            <button class="all">v</button>
-            <button class="more">+</button>
+            <button class="right" onclick="slide_right()">></button>
+            <button id="chat_button_all" class="all" onclick="showChanList()">v</button>
+            <button class="more" onclick="chat_add()">+</button>
         </div>
     </div>
     <div id="messages-wrapper" class="messages-wrapper">

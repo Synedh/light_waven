@@ -1,0 +1,47 @@
+<div class="header_wrapper">
+    <div class="title">Light Waven 1v1</div>
+    <button class="login" onclick="login_display()">Log in</button>
+    <button class="register" onclick="register_display()">Register</button>
+</div>
+<div id="login_modal" class="modal">
+    <div class="modal_content">
+        <div class="modal-header">
+            <span class="close" onclick="login_close()">&times;</span>
+            <div class="content">Logging in</div>
+        </div>
+        <form name="login">
+            <div class="modal-body">
+                    <div class="input_name">Login</div>
+                    <input type="text" placeholder="Login" name="login" required>
+                    <div class="input_name">Password</div>
+                    <input type="password" placeholder="Password" name="password" required>
+            </div>
+            <div class="modal-footer">
+                <input type="submit" class="content" value="LOGIN">
+            </div>
+        </form>
+    </div>
+</div>
+<div id="register_modal" class="modal">
+    <div class="modal_content">
+        <div class="modal-header">
+            <span class="close" onclick="register_close()">&times;</span>
+            <div class="content">Register</div>
+        </div>
+        <form name="register">
+            <div class="modal-body">
+                    <div class="input_name">Login</div>
+                    <input type="text" placeholder="Login" name="login" required>
+                    <div class="input_name">Email</div>
+                    <input type="email" placeholder="Email" name="email" required>
+                    <div class="input_name">Password</div>
+                    <input id="register_password" type="password" placeholder="Password" name="password" required>
+                    <div class="input_name">Confirm Password</div>
+                    <input id="register_password_confirm" type="password" placeholder="Password" name="password_confirm" required>
+            </div>
+            <div class="modal-footer">
+                <input id="register" type="submit" class="content" value="REGISTER">
+            </div>
+        </form>
+    </div>
+</div>

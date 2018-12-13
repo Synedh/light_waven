@@ -7,6 +7,7 @@ const express       = require('express'),
       http          = require('http').Server(app),
       io            = require('socket.io')(http),
       Message       = require('./models/messageModel'),
+      User          = require('./models/userModel'),
       routes        = require('./routes/routes'),
       sockets       = require('./routes/sockets');
 
