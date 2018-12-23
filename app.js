@@ -1,4 +1,5 @@
 const express       = require('express'),
+      session       = require('express-session'),
       mongoose      = require('mongoose'),
       bodyParser    = require('body-parser'),
       nunjucks      = require('nunjucks'),
@@ -14,10 +15,13 @@ const express       = require('express'),
 mongoose.Promise = global.Promise;
 mongoose.connect('mongodb://localhost/LightWavenDb', { useNewUrlParser: true });
 
+app.set('views', __dirname + '/views');
+// app.set('trust proxy', 1);
+
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
+app.use(session({secret: "v3ry53cr37", resave: false, saveUninitialized: true, cookie: { /* secure: true */ }}))
 app.use(express.static(__dirname + '/static'));
-app.set('views', __dirname + '/views');
 
 nunjucks.configure('views', { autoescape: true, express: app });
 
@@ -27,5 +31,3 @@ sockets(app, io); // register sockets
 http.listen(port, function() {
     console.log('Light Waven 1v1 server started on: ' + port);
 });
-
-

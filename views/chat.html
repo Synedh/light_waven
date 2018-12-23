@@ -4,17 +4,13 @@
             <button class="left" onclick="slide_left()"><</button>
         </div>
         <div class="tabs">
-            <div class="tab current" onclick="select_tab(0)">
-                <div class="name">Général</div>
+            <div class="tab current">
+                <div class="name" onclick="select_tab(0)">Général</div>
             </div>
-            <div class="tab" onclick="select_tab(1)">
-                <div class="name">Personne</div>
+            <!-- <div class="tab">
+                <div class="name" onclick="select_tab(1)">Personne</div>
                 <button class="close" onclick="close_tab(1)">X</button>
-            </div>
-            <div class="tab" onclick="select_tab(2)">
-                <div class="name">KKun</div>
-                <button class="close" onclick="close_tab(2)">X</button>
-            </div>
+            </div> -->
         </div>
         <div class="right_buttons">
             <button class="right" onclick="slide_right()">></button>
@@ -26,6 +22,6 @@
         <div id="messages" class="messages"></div>
     </div>
     <div class="typebox">
-        <input id="typefield" class="typefield" type="search" name=search placeholder="Ecrivez un message">
+        <input id="typefield" class="typefield" type="search" name=search {% if user==null %}disabled{% else %} placeholder="Ecrivez un message" {% endif %}>
     </div>
 </div>

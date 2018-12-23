@@ -1,11 +1,18 @@
 'use strict';
 
 module.exports = function(app, io) {
-    const chatController  = require('../controllers/chatController'),
-          dates = require('../tools/dates');
+    const mongoose          = require('mongoose'),
+          User              = mongoose.model('User'),
+          Message           = mongoose.model('Message'),
+          userController    = require('../controllers/userController'),
+          dates             = require('../tools/dates');
 
     io.on('connection', function(socket) {
         console.log(socket.handshake.address + ' has connected');
+        socket.join('general', function(err) {
+            if (err)
+                console.log("Couln't joint general channel : " + err);
+        });
 
         socket.on('disconnect', function() {
             console.log(socket.handshake.address + ' has disconnected');
@@ -13,15 +20,35 @@ module.exports = function(app, io) {
 
         socket.on('chat_message', function(msg) {
             // console.log(socket.conn.remoteAddress);
-            console.log(dates.logDate(new Date()) + " : " + msg);
-            io.to(msg['room']).emit(
-                'chat_message', 
-                {
-                    timestamp: dates.chatDate(new Date()),
-                    username: msg['username'],
-                    message: msg['message']
+            User.findById(msg['user_id'], function(err, user) {
+                if (err)
+                    console.log(err);
+                else {
+                    var new_message = new Message({
+                        content: msg['message'],
+                        sender: user,
+                        date: new Date(),
+                        channel_type: msg['channel_type'],
+                        users: msg['channel_users']
+                    })
+                    new_message.save(function(err, message) {
+                        if (err)
+                            console.log(err);
+                        else {
+                            console.log(dates.logDate(message.date) + " " + user.login + " : " + message);
+                            io.to(msg['channel_name']).emit(
+                                'chat_message', 
+                                {
+                                    timestamp: dates.chatDate(message.date),
+                                    username: user.login,
+                                    message: message.content
+                                }
+                            );
+                        }
+                    });
                 }
-            );
+            });
+
         });
 
         socket.on('create_chan', function(chan_name) {

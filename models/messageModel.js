@@ -8,7 +8,8 @@ var messageSchema = new Schema({
         required: true
     },
     sender: {
-        type: String,
+        type: Schema.Types.ObjectId,
+        ref: 'User',
         required: true
     },
     date: {
@@ -23,14 +24,13 @@ var messageSchema = new Schema({
     users: {
         type: [String]
     }
-},
-{
-    toJSON: { 
-        virtuals: true
-    },
-    toObject: {
-        virtuals: true
+});
+
+messageSchema.pre('save', function(next) {
+    if (this.channel_type == 'general' && this.users.length > 0) {
+        next('Incorrect number of user(s) with channel type ' + this.channel_type + '.');
     }
+    next();
 });
 
 

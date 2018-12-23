@@ -51,6 +51,25 @@ body {
     cursor: pointer;
 }
 
+.header_wrapper .user_detail {
+    position: absolute;
+    right: 0;
+    top: 24px;
+    border: 1px solid black;
+    padding: 2px 5px;
+    display: none;
+}
+
+.header_wrapper .user_detail div {
+    padding: 5px;
+}
+
+.header_wrapper .user_detail button {
+    border: none;
+    display: block;
+    margin: 0 auto 5px auto;
+}
+
 /* The Modal (background) */
 .modal {
     display: none; /* Hidden by default */
@@ -248,6 +267,10 @@ body {
 
 .tabs-wrapper .tabs .tab .name {
     padding: 0 5px 0 5px; 
+}
+
+.tabs-wrapper .tabs .tab .name:hover {
+    cursor: pointer;
 }
 
 .tabs-wrapper .tabs .tab .close {

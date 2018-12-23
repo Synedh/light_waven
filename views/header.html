@@ -1,7 +1,16 @@
 <div class="header_wrapper">
     <div class="title">Light Waven 1v1</div>
+    {% if user %}
+    <button class="account" onclick="user_detail()">{{ user.login }}</button>
+    <div id="user_detail" class="user_detail">
+        <div class="detail_login">{{ user.login }}</div>
+        <div class="detail_email">{{ user.email}}</div>
+        <button class="disconnect" onclick="disconnect()">Disconnect</button>
+    </div>
+    {% else %}
     <button class="login" onclick="login_display()">Log in</button>
     <button class="register" onclick="register_display()">Register</button>
+    {% endif %}
 </div>
 <div id="login_modal" class="modal">
     <div class="modal_content">
@@ -12,9 +21,9 @@
         <form name="login">
             <div class="modal-body">
                     <div class="input_name">Login</div>
-                    <input type="text" placeholder="Login" name="login" required>
+                    <input id="login_login" type="text" placeholder="Login" name="login" required>
                     <div class="input_name">Password</div>
-                    <input type="password" placeholder="Password" name="password" required>
+                    <input id="login_password" type="password" placeholder="Password" name="password" required>
             </div>
             <div class="modal-footer">
                 <input type="submit" class="content" value="LOGIN">
@@ -31,9 +40,9 @@
         <form name="register">
             <div class="modal-body">
                     <div class="input_name">Login</div>
-                    <input type="text" placeholder="Login" name="login" required>
+                    <input id="register_login" type="text" placeholder="Login" name="login" required>
                     <div class="input_name">Email</div>
-                    <input type="email" placeholder="Email" name="email" required>
+                    <input id="register_email" type="email" placeholder="Email" name="email" required>
                     <div class="input_name">Password</div>
                     <input id="register_password" type="password" placeholder="Password" name="password" required>
                     <div class="input_name">Confirm Password</div>

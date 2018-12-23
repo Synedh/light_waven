@@ -8,17 +8,19 @@
         {% block head %}{% endblock %}
     </head>
     <body>
-        {% block header %}
         <div class="header">
-            {% include "header.html" %}
-        </div>
+        {% block header %}
         {% endblock %}
-        {% block content %}{% endblock %}
-        {% block footer %} 
-        <div class="footer">
         </div>
+        {% block content %}{% endblock %}
+        <div class="footer">
+        {% block footer %} 
+        {% endblock %}
+        </div>
+        {% block javascripts %}
         <script src="/socket.io/socket.io.js"></script>
-        <script src="js/global.js"></script>
+        <script src="js/index.js"></script>
+        <script>window.appConfig = { user: '{{ jsonUser|safe }}' }</script>
         {% endblock %}
     </body>
 </html>

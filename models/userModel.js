@@ -1,4 +1,4 @@
-'use strict';
+    'use strict';
 var mongoose = require('mongoose'),
     bcrypt = require('bcrypt');
 var Schema = mongoose.Schema;
@@ -6,7 +6,8 @@ var Schema = mongoose.Schema;
 var userSchema = new Schema({
     login: {
         type: String,
-        required: true
+        required: true,
+        unique: true
     },
     password: {
         type: String,
@@ -14,35 +15,40 @@ var userSchema = new Schema({
     },
     email: {
         type: String,
-        required: true
-    }
-},
-{
-    toJSON: { 
-        virtuals: true
-    },
-    toObject: {
-        virtuals: true
+        required: true,
+        unique: true
     }
 });
 
 userSchema.pre('save', function (next) {
     var user = this;
-    if (user.isModified('password') || user.isNew) {
+    if (user.isNew) {
         bcrypt.hash(user.password, 10, function (err, hash) {
-            if (err) {
+            if (err)
                 return next(err);
-            }
             user.password = hash;
+            var mailFormat = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
+            if (!user.email.match(mailFormat)) {
+                return next('Incorrect email format');
+            }
+            return next();
         });
-    } 
-    if (user.isModified('email') || user.isNew) {
+    } else if (user.isModified('password')) {
+        bcrypt.hash(user.password, 10, function (err, hash) {
+            if (err)
+                return next(err);
+            user.password = hash;
+            return next();  
+        });
+    } else if (user.isModified('email')) {
         var mailFormat = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
-        if (user.email.match(mailFormat)) {
+        if (!user.email.match(mailFormat)) {
             return next('Incorrect email format');
         }
+        return next();
+    } else {
+        return next();
     }
-    return next();
 });
  
 userSchema.methods.comparePassword = function (password, next) {

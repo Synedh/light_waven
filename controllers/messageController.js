@@ -19,3 +19,12 @@ exports.create_a_message = function(req, res) {
     res.json(message);
   });
 };
+
+
+exports.delete_a_message = function(req, res) {
+    Message.deleteOne({_id: req.params.messageId}, function(err, message) {
+        if (err)
+            res.send(err);
+        res.json({ message: 'Message successfully deleted.' });
+    });
+};
