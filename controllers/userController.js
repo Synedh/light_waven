@@ -1,7 +1,8 @@
 'use strict';
 
-var mongoose = require('mongoose'),
-  User = mongoose.model('User');
+var mongoose    = require('mongoose'),
+    User        = mongoose.model('User'),
+    req_tools   = require('../tools/request_tools');
 
 exports.list_all_users = function(req, res) {
     User.find(req.query, 'login email', function(err, user) {
@@ -59,6 +60,8 @@ exports.login = function(req, res) {
             if (err)
                 res.json(err);
             if (okPass) {
+                user.used_ips.push(req_tools.getClientIp(req));
+                user.save();
                 req.session.user = {
                     'id': user.id,
                     'login': user.login,

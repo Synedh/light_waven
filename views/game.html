@@ -1,7 +1,7 @@
 <div class="game">
     <div class="opponent_board">
         <div class="action_points">6 / 6</div>
-        <div class="opponent_wrapper">
+        <div class="card_wrapper">
             <div class="deck">
                 <div class="card">
                         <div class="card_back">Waven</div>
@@ -41,7 +41,11 @@
     <div class="game_board">
         <div class="row">
             <div id="0-0" class="cell"></div>
-            <div id="0-1" class="cell"></div>
+            <div id="0-1" class="cell">
+                <div class="entity">
+                    <div class="entity_name"></div>
+                </div>
+            </div>
             <div id="0-2" class="cell"></div>
             <div id="0-3" class="cell"></div>
             <div id="0-4" class="cell"></div>
@@ -89,7 +93,19 @@
             <div id="5-1" class="cell"></div>
             <div id="5-2" class="cell"></div>
             <div id="5-3" class="cell"></div>
-            <div id="5-4" class="cell"></div>
+            <div id="5-4" class="cell">
+                <div class="entity">
+                    <div class="entity_name"></div>
+                    <div class="detail">
+                        <div class="classe_name">Classname</div>
+                        <div class="stats">
+                            <div class="life">100</div>
+                            <div class="mp">3</div>
+                            <div class="dmg">15</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
             <div id="5-5" class="cell"></div>
             <div id="5-6" class="cell"></div>
         </div>
@@ -110,7 +126,7 @@
         <button class="end_turn">&olarr;</button>
     </div>
     <div class="player_board">
-        <div class="player_wrapper">
+        <div class="card_wrapper">
             <div class="storage">
                 <div class="storage_value">0</div>
             </div>

@@ -16,8 +16,8 @@ body {
 
 .game-wrapper {
     position: absolute;
-    width: 650px;
-    height: 650px;
+    width: 80vh;
+    height: 80vh;
     left: 50%;
     top: 50%;
     transform: translate(-50%, -50%);
@@ -153,6 +153,7 @@ body {
     border-bottom: 1px solid black;
     width: 150px;
     margin-bottom: 12px;
+    text-align: center;
 }
 
 .modal .modal_content .modal-footer {
@@ -187,7 +188,9 @@ body {
 .chatbox {
     display: flex;
     flex-direction: column;
+    background-color: white;
     border: 1px solid black;
+    z-index: 1;
     height: 100%;
     width: 100%;
 }
@@ -331,94 +334,101 @@ body {
     transform: translateX(-50%);
 }
 
-.opponent_board .action_points {
+.player_board {
     position: absolute;
-    top: 5px;
+    bottom: 0;
     left: 50%;
     transform: translateX(-50%);
-    width: 100px;
-    border: 1px solid black;
-    text-align: center;
 }
 
-.opponent_board .opponent_wrapper {
-    position: absolute;
-    top: 30px;
+.action_points {
+    position: relative;
+    margin: 1% 0;
     left: 50%;
     transform: translateX(-50%);
+    width: 30%;
+    border: 1px solid black;
+    text-align: center;
+    font-size: 1.8vh;
+}
+
+.card_wrapper {
+    position: relative;
     display: flex;
     justify-content: center;
 }
 
-.opponent_board .opponent_wrapper .deck {
-    width: 45px;
-    height: 60px;
+.deck {
+    width: 4.5vh;
+    height: 6vh;
     border: 1px solid black;
     border-radius: 5px;
-    margin: 5px;
+    margin: 0 5px;
 }
 
-.opponent_board .opponent_wrapper .cards {
+.cards {
     display: flex;
-    margin: 0 15px 0 15px;
+    margin: 0 15px;
 }
 
 .card {
-    width: 45px;
-    height: 60px;
+    width: 4.5vh;
+    height: 6vh;
     border: 1px solid black;
     border-radius: 5px;
-    margin: 5px;
+    margin: 0 5px;
+    background-color: white;
     position: relative;
 }
 
 .card .card_back {
     position: absolute;
     transform: rotateZ(45deg);
-    top: 20px;
-    left: -2px;
-    font-size: 15px;
+    z-index: 1;
+    top: 2vh;
+    font-size: 1.5vh;
 }
 
-.opponent_board .opponent_wrapper .deck .card {
+.deck .card {
     margin: 0.1px;
 }
 
-.opponent_board .opponent_wrapper .storage {
-    width: 45px;
-    height: 45px;
+.storage {
+    width: 4.5vh;
+    height: 4.5vh;
     border: 1px solid black;
     border-radius: 5px;
-    margin: 10px 5px 5px 5px;
+    transform: translateY(15%);
 }
 
-.opponent_board .opponent_wrapper .storage .storage_value {
+.storage_value {
+    margin-top: 50%;
+    transform: translateY(-50%);
     text-align: center;
-    padding-top: 7px;
-    font-size: 25px;
+    font-size: 3vh;
 }
 
 .spell_history {
     position: absolute;
-    left: 20px;
+    left: 2vh;
     top: 50%;
     transform: translateY(-50%);
 
-    height: 300px;
+    height: 40%;
     border: 1px solid black;
-    border-radius: 10px;
+    border-radius: 1vh;
 
     display: flex;
     flex-direction: column;
     align-items: center;
-    padding: 5px;
+    padding: 0.5vh;
     overflow: hidden;
 }
 
 .spell_history .used_spell {
-    width: 40px;
-    min-height: 40px;
-    margin: 5px;
+    width: 4vh;
+    min-height: 4vh;
+    margin: 0.5vh;
     border: 1px solid black;
     border-radius: 5px;
 }
@@ -428,18 +438,20 @@ body {
     left: 50%;
     top: 50%;
     transform: translate(-50%, -50%);
+    width: 70%;
+    height: 70%;
 
     display: flex;
     flex-direction:column;
     border: 1px solid black;
-    padding: 10px;
+    padding: 1.5%;
     border-radius: 10px;
 }
 
 .game_board .row {
     display: flex; 
-    width: 420px;
-    height: 60px;
+    width: 100%;
+    height: 100%;
     border-top: 1px solid black;
 }
 
@@ -448,22 +460,62 @@ body {
 }
 
 .game_board .row .cell {
-    width: 60px;
-    height: 60px;
+    width: 14.2857%;
+    height: 100%;
     border-left: 1px solid black;
+    display: flex;
+    align-content: center;
 }
 
 .game_board .row .cell:last-child {
     border-right: 1px solid black;
 }
 
+.game_board .row .cell .entity {
+    position: relative;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 80%;
+    height: 80%;
+    border: 1px solid black;
+    border-radius: 50%;
+    box-shadow: 1px 1px;
+}
+
+.game_board .row .cell .entity .detail {
+    display: none;
+    position: relative;
+    width: 18vh;
+    transform: translate(-35%, -80%);
+    flex-direction: column;
+    background-color: white;
+    border: 1px solid black;
+    border-radius: 5px;
+    padding: 0.5vh;
+    text-align: center;
+    justify-content: center;
+    font-size: 1.7vh;
+}
+
+.game_board .row .cell .entity:hover .detail {
+    display: flex; 
+}
+
+.game_board .row .cell .entity .detail .stats {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+}
+
 .timeline {
     position: absolute;
-    right: 65px;
+    right: 6%;
+    width: 5%;
     top: 50%;
     transform: translateY(-50%);
 
-    height: 300px;
+    height: 60%;
 
     display: flex;
     flex-direction: column;
@@ -473,10 +525,10 @@ body {
 }
 
 .timeline .duration {
-    flex: 1;
     border-bottom: 1px solid black;
     border-radius: 10px;
     width: 100%;
+    height: 90%;
     background-color: white;
 }
 
@@ -488,70 +540,16 @@ body {
 }
 
 .timeline .end_turn {
+    position: absolute;
+    bottom: 1%;
     border: none;
     background: none;
     color: white;
-    font-size: 20px;
+    font-size: 3.5vh;
     padding: 0 4px 0 4px;
 }
 
 .timeline .end_turn:hover {
     flex: 0;
     cursor: pointer;
-}
-
-.player_board {
-    position: absolute;
-    bottom: 0;
-    left: 50%;
-    transform: translateX(-50%);
-}
-.player_board .action_points {
-    position: absolute;
-    bottom: 5px;
-    left: 50%;
-    transform: translateX(-50%);
-    width: 100px;
-    border: 1px solid black;
-    text-align: center;
-}
-
-.player_board .player_wrapper {
-    position: absolute;
-    bottom: 30px;
-    left: 50%;
-    transform: translateX(-50%);
-    display: flex;
-    justify-content: center;
-}
-
-.player_board .player_wrapper .deck {
-    width: 45px;
-    height: 60px;
-    border: 1px solid black;
-    border-radius: 5px;
-    margin: 5px;
-}
-
-.player_board .player_wrapper .cards {
-    display: flex;
-    margin: 0 15px 0 15px;
-}
-
-.player_board .player_wrapper .deck .card {
-    margin: 0.1px;
-}
-
-.player_board .player_wrapper .storage {
-    width: 45px;
-    height: 45px;
-    border: 1px solid black;
-    border-radius: 5px;
-    margin: 10px 5px 5px 5px;
-}
-
-.player_board .player_wrapper .storage .storage_value {
-    text-align: center;
-    padding-top: 7px;
-    font-size: 25px;
 }

@@ -9,6 +9,10 @@ exports.index = function(req, res) {
 }
 
 exports.disconnect = function(req, res) {
-    delete req.session.user;
-    res.render('index.html', {});
+    req.session.destroy(
+        function (err) {
+            if (err)
+                req.json(err);
+    });
+    res.json({ action: 'ok' });
 }

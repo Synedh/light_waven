@@ -9,7 +9,6 @@ function disconnect() {
     get("/disconnect", {}, function(response) {
         if (response)
             location.reload();
-        console.log(response);
     });
 }
 
@@ -23,7 +22,6 @@ document.forms["login"]
         post("/login", data, function(response) {
             if (response)
                 location.reload();
-            console.log(response);
         });
 });
 

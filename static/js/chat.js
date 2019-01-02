@@ -2,7 +2,6 @@ var chatBox = document.getElementById("chatbox");
 var messageWrapper = document.getElementById("messages-wrapper");
 var messageBox = document.getElementById("messages");
 var typeField = document.getElementById("typefield");
-console.log(window.appConfig.user);
 var user = JSON.parse(window.appConfig.user);
 var messages = [{ name: "general", type: "general", users: [], messages: [] }];
 var currentChan = 0;
@@ -51,7 +50,6 @@ typeField.addEventListener("keyup", function(event) {
                 "user_id": user.id,
                 "message": this.value
             };
-        console.log(message);
         socket.emit(
             "chat_message", message
         );
@@ -87,7 +85,6 @@ window.onclick = function(event) {
     if (document.getElementById('chan_list')
         && event.target.id != 'chan_list'
         && !event.target.classList.contains('chan')) {
-        console.log('test');
         document.getElementById('chan_list').outerHTML = "";
     }
 }

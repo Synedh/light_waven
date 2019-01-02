@@ -17,6 +17,10 @@ var userSchema = new Schema({
         type: String,
         required: true,
         unique: true
+    },
+    used_ips: {
+        type: [String],
+        default: []
     }
 });
 

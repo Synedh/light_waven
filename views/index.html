@@ -6,15 +6,15 @@
 {% endblock %}
 
 {% block content %}
-<div class="chat">{% include "chat.html" %}
-</div>
 <div class="game-wrapper">{% include "game.html" %}
+</div>
+<div class="chat">{% include "chat.html" %}
 </div>
 {% endblock %}
 
 {% block javascripts %}
 {{ super() }}
 <script src="js/header.js"></script>
-<script src="js/chat.js"></script>
 <script src="js/game.js"></script>
+<script src="js/chat.js"></script>
 {% endblock %}
