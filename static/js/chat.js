@@ -57,6 +57,10 @@ typeField.addEventListener("keyup", function(event) {
     }
 });
 
+socket.on('refresh_user', function() {
+    socket.emit('refresh_user', user.id);
+});
+
 socket.on("chat_message", function(content) {
     var is_bottom = messageWrapper.scrollTop === messageWrapper.scrollTopMax;
     messageBox.writeMessage(content);

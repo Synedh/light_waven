@@ -9,10 +9,16 @@ exports.index = function(req, res) {
 }
 
 exports.disconnect = function(req, res) {
-    req.session.destroy(
-        function (err) {
-            if (err)
-                req.json(err);
+    User.findOne({'login': req.session.user.login }, function(err, user) {
+        if (err)
+            req.json(err);
+        user.connected = false;
+        user.save()
+        req.session.destroy(
+            function (err) {
+                if (err)
+                    req.json(err);
+        });
+        res.json({ action: 'ok' });
     });
-    res.json({ action: 'ok' });
 }

@@ -61,6 +61,7 @@ exports.login = function(req, res) {
                 res.json(err);
             if (okPass) {
                 user.used_ips.push(req_tools.getClientIp(req));
+                user.connected = true;
                 user.save();
                 req.session.user = {
                     'id': user.id,

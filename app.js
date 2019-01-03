@@ -3,6 +3,7 @@ const express       = require('express'),
       mongoose      = require('mongoose'),
       bodyParser    = require('body-parser'),
       nunjucks      = require('nunjucks'),
+      pf            = require('pathfinding'),
       app           = express(),
       port          = process.env.PORT || 3000,
       http          = require('http').Server(app),
@@ -31,3 +32,6 @@ sockets(app, io); // register sockets
 http.listen(port, function() {
     console.log('Light Waven 1v1 server started on: ' + port);
 });
+
+
+// pathfinding doc : https://github.com/qiao/PathFinding.js/

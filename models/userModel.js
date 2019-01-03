@@ -18,6 +18,13 @@ var userSchema = new Schema({
         required: true,
         unique: true
     },
+    connected: {
+        type: Boolean,
+        default: false
+    },
+    last_socket_id: {
+        type: String
+    },
     used_ips: {
         type: [String],
         default: []

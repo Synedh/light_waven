@@ -7,15 +7,39 @@ module.exports = function(app, io) {
           userController    = require('../controllers/userController'),
           dates             = require('../tools/dates');
 
-    io.on('connection', function(socket) {
-        console.log(socket.handshake.address + ' has connected');
+    io.on('connect', function(socket) {
+        var this_user_id = null;
+        socket.emit('refresh_user');
+
         socket.join('general', function(err) {
             if (err)
                 console.log("Couln't joint general channel : " + err);
         });
 
-        socket.on('disconnect', function() {
-            console.log(socket.handshake.address + ' has disconnected');
+        socket.on('refresh_user', function(user_id) {
+            User.findById(user_id, function(err, user) {
+                if (!err && user) {
+                    this_user_id = user_id;
+                    user.last_socket_id = socket.id;
+                    user.connected = true;
+                    user.save();
+                    console.log(socket.handshake.address + ' has connected has ' + user.login);
+                } else {
+                    console.log(socket.handshake.address + ' has connected');
+                }
+            })
+        });
+
+        socket.on('disconnect', function(reason) {
+            User.findById(this_user_id, function(err, user) {
+                if (!err && user) {
+                    user.connected = false;
+                    user.save();
+                    console.log(user.login + ' has disconnected for reason : ' + reason);
+                } else {
+                    console.log(socket.handshake.address + ' has disconnected for reason : ' + reason);
+                }
+            });
         });
 
         socket.on('chat_message', function(msg) {
@@ -77,6 +101,19 @@ module.exports = function(app, io) {
 
         socket.on('invite', function(id, chan) {
             io.to(id).emit('join', chan);
+        }); 
+
+        socket.on('challenge', function(username) {
+            User.findOne({'login': username}, function(err, user) {
+                if (err) {
+                    socket.emit('challenge', { error: err });
+                } else if (!user) {
+                    socket.emit('challenge', { error: 'User ' + username + 'does not exists.' });
+                } else if (!user.connected) {
+                    socket.emit('challenge', { error: 'User ' + username + 'is not connected.' });
+                }
+            })
+            console.log(username);
         });
     });
 };
