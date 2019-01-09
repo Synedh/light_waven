@@ -28,6 +28,13 @@ var userSchema = new Schema({
     used_ips: {
         type: [String],
         default: []
+    },
+    created_on: {
+        type: Date,
+        default: new Date()
+    },
+    last_connection_date: {
+        type: Date,
     }
 });
 

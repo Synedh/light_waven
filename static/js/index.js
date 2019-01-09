@@ -26,3 +26,7 @@ function post(url, data, next) {
     xhttp.setRequestHeader("Content-type", "application/json;charset=UTF-8");
     xhttp.send(JSON.stringify(data));
 }
+
+window.onload = function() {
+    loadChatMessages();
+}

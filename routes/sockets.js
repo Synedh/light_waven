@@ -23,9 +23,9 @@ module.exports = function(app, io) {
                     user.last_socket_id = socket.id;
                     user.connected = true;
                     user.save();
-                    console.log(socket.handshake.address + ' has connected has ' + user.login);
+                    console.log(dates.logDate(new Date()) + " " + socket.handshake.address + ' has connected has ' + user.login);
                 } else {
-                    console.log(socket.handshake.address + ' has connected');
+                    console.log(dates.logDate(new Date()) + " " + socket.handshake.address + ' has connected');
                 }
             })
         });
@@ -35,9 +35,9 @@ module.exports = function(app, io) {
                 if (!err && user) {
                     user.connected = false;
                     user.save();
-                    console.log(user.login + ' has disconnected for reason : ' + reason);
+                    console.log(dates.logDate(new Date()) + " " + user.login + ' has disconnected for reason : ' + reason);
                 } else {
-                    console.log(socket.handshake.address + ' has disconnected for reason : ' + reason);
+                    console.log(dates.logDate(new Date()) + " " + socket.handshake.address + ' has disconnected for reason : ' + reason);
                 }
             });
         });
@@ -103,17 +103,48 @@ module.exports = function(app, io) {
             io.to(id).emit('join', chan);
         }); 
 
-        socket.on('challenge', function(username) {
-            User.findOne({'login': username}, function(err, user) {
+        socket.on('challenge', function(values) {
+            console.log(dates.logDate(new Date()) + " " + values.challenger + " challenge " + values.opponent);
+            User.findOne({'login': { $regex: new RegExp(values.opponent.toLowerCase(), "i") }}, function(err, user) {
                 if (err) {
-                    socket.emit('challenge', { error: err });
+                    socket.emit('challenge_cancel', { error: err });
                 } else if (!user) {
-                    socket.emit('challenge', { error: 'User ' + username + 'does not exists.' });
+                    socket.emit('challenge_cancel', { error: 'User ' + values.opponent + ' does not exists.' });
+                } else if (user.login == values.challenger) {
+                    socket.emit('challenge_cancel', { error: 'You cannot challenge yourself !' });
                 } else if (!user.connected) {
-                    socket.emit('challenge', { error: 'User ' + username + 'is not connected.' });
+                    socket.emit('challenge_cancel', { error: 'User ' + values.opponent + ' is not connected.' });
+                } else {
+                    console.log(dates.logDate(new Date()) + " " + values.challenger + " challenge " + user.login);
+                    socket.to(user.last_socket_id)
+                        .emit('challenge', { username: values.challenger })
                 }
-            })
-            console.log(username);
+            });
+        });
+
+        socket.on('challenge_cancel', function(values) {
+            User.findOne({'login': { $regex: new RegExp(values.opponent.toLowerCase(), "i") }}, function(err, user) {
+                if (err) {
+                    socket.to(user.last_socket_id)
+                        .emit('challenge_cancel', { error: err });
+                } else {
+                    socket.to(user.last_socket_id)
+                        .emit('challenge_cancel', { message: 'User cancelled challenge.' });
+                }
+            });
+        });
+
+        socket.on('challenge_accept', function(values) {
+            User.findOne({'login': { $regex: new RegExp(values.opponent.toLowerCase(), "i") }}, function(err, user) {
+                if (err) {
+                    socket.to(user.last_socket_id)
+                        .emit('challenge_cancel', { error: err });
+                } else {
+                    console.log(dates.logDate(new Date()) + " " + values.opponent + " started a battle against " + values.challenger)
+                    socket.to(user.last_socket_id)
+                        .emit('challenge_accept', { message: true });
+                }
+            });
         });
     });
 };

@@ -1,5 +1,9 @@
 'use strict';
 
+
+var mongoose    = require('mongoose'),
+    User        = mongoose.model('User');
+
 exports.index = function(req, res) {
     if (req.session.user)
         var jsonUser = JSON.stringify(req.session.user);

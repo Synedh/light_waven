@@ -5,22 +5,28 @@ var typeField = document.getElementById("typefield");
 var user = JSON.parse(window.appConfig.user);
 var messages = [{ name: "general", type: "general", users: [], messages: [] }];
 var currentChan = 0;
+var chanList = null;
 
 function scrollDown() {
     messageWrapper.scrollTop = messageWrapper.scrollHeight;
 }
 
 function showChanList() {
-    var pannel = document.createElement("div");
-    pannel.setAttribute("class", "chan_list");
-    pannel.setAttribute("id", "chan_list");
-    for (var i = 0; i < messages.length; i++) {
-        var chan = document.createElement("div");
-        chan.setAttribute("class", "chan"); 
-        chan.innerHTML = messages[i]['name'];
-        pannel.appendChild(chan);
+    if (chanList) {
+        chanList.parentElement.removeChild(chanList);
+    } else {
+        var pannel = document.createElement("div");
+        pannel.setAttribute("class", "chan_list");
+        pannel.setAttribute("id", "chan_list");
+        for (var i = 0; i < messages.length; i++) {
+            var chan = document.createElement("div");
+            chan.setAttribute("class", "chan"); 
+            chan.innerHTML = messages[i]['name'];
+            pannel.appendChild(chan);
+        }
+        chatBox.appendChild(pannel);
+        chanList = pannel;
     }
-    chatBox.appendChild(pannel);
 }
 
 messageBox.writeMessage = function (message) {
@@ -80,15 +86,3 @@ socket.on("get_messages", function(content) {
 socket.on("join", function(chan) {
     console.log(chan);
 });
-
-window.onload = function() {
-    loadChatMessages();
-}
-
-window.onclick = function(event) {
-    if (document.getElementById('chan_list')
-        && event.target.id != 'chan_list'
-        && !event.target.classList.contains('chan')) {
-        document.getElementById('chan_list').outerHTML = "";
-    }
-}

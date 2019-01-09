@@ -5,7 +5,7 @@ var mongoose    = require('mongoose'),
     req_tools   = require('../tools/request_tools');
 
 exports.list_all_users = function(req, res) {
-    User.find(req.query, 'login email', function(err, user) {
+    User.find(req.query, 'login email connected used_ips created_on last_connection date', function(err, user) {
         if (err)
             res.send(err);
         res.json(user);
@@ -51,7 +51,7 @@ exports.delete_a_user = function(req, res) {
 
 
 exports.login = function(req, res) {
-    User.findOne({'login': req.body['login']}, function(err, user) {
+    User.findOne({'login': { $regex: new RegExp(req.body['login'].toLowerCase(), "i") } }, function(err, user) {
         if (err)
             res.json(err);
         if (!user)
@@ -60,6 +60,10 @@ exports.login = function(req, res) {
             if (err)
                 res.json(err);
             if (okPass) {
+                var ipIndex = user.used_ips.indexOf(req_tools.getClientIp(req));
+                if (ipIndex >= 0) {
+                     user.used_ips.splice(ipIndex, 1);
+                }
                 user.used_ips.push(req_tools.getClientIp(req));
                 user.connected = true;
                 user.save();
@@ -79,7 +83,17 @@ exports.register = function(req, res) {
     var new_user = new User(req.body);
     new_user.save(function(err, user) {
         if (err)
-            res.json(err);
-        res.json(true);
+            res.json({ error: err });
+        else {
+            user.used_ips.push(req_tools.getClientIp(req));
+            user.connected = true;
+            user.save();
+            req.session.user = {
+                'id': user.id,
+                'login': user.login,
+                'email': user.email
+            };
+            res.json(user);
+        }
     });
 };

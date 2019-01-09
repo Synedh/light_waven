@@ -2,7 +2,12 @@ var user = {};
 var registerButton = document.getElementById("register");
 
 function user_detail() {
-    document.getElementById('user_detail').style.display = 'block';
+    var user_tab = document.getElementById("user_detail")
+    if (user_tab.style.display != "block") {
+        user_tab.style.display = "block";
+    } else {
+        user_tab.style.display = "none";
+    }
 }
 
 function disconnect() {
@@ -34,13 +39,18 @@ document.forms["register"]
             "email": this["email"].value
         }
         post("/register", data, function(response) {
+            if (response.error) {
+                console.log(response.error);
+            } else {
+                location.reload();
+            }
         });
 });
 
 document.getElementById("register_login")
     .addEventListener("change", function(event) {
         var input = this;
-        get("/user", {"login": this.value}, function(response) {
+        get("/user", {"login": { $regex: new RegExp(this.value.toLowerCase(), "i") }}, function(response) {
             if (response.length > 0) {
                 input.setCustomValidity("Le pseudo \"" + input.value + "\" est déjà utilisé.")
                 registerButton.disabled = true;
@@ -101,6 +111,7 @@ function login_close() {
 
 function register_display() {
     register_modal.style.display = "block";
+    document.getElementById('register_login').focus();
 }
 
 function register_close() {
@@ -108,11 +119,13 @@ function register_close() {
     document.forms["register"].reset();
 }
 
-window.onclick = function(event) {
-    if (event.target == login_modal) {
-        login_close(); 
-    }
-    if (event.target == register_modal) {
+login_modal.addEventListener("click", function(event) {
+    if (event.target == login_modal)
+        login_close();
+});
+
+
+register_modal.addEventListener("click", function(event) {
+    if (event.target == register_modal)
         register_close();  
-    }
-}
+});

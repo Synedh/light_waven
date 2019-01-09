@@ -24,14 +24,12 @@ class Grid {
         for (var i = 0; i < this.grid.length; ++i) {
             var row = this.grid[i];
             for (var j = 0; j < row.length; ++j) {
-                if (row[j]) {
-                    row[j].create();
-                } else {
-                    var cell = document.getElementById(i + '-' + j).innerHTML = "";
-                    while (cell.lastChild) {
-                        cell.removeChild(cell.lastChild);
-                    }
+                var cell = document.getElementById(i + '-' + j).innerHTML = "";
+                while (cell.lastChild) {
+                    cell.removeChild(cell.lastChild);
                 }
+                if (row[j])
+                    row[j].create();
             }
         }
     }

@@ -13,6 +13,10 @@ class Entity {
         this.position = { x: 0, y: 0 };
     }
 
+    move(x, y) {
+        grid.move(this, x, y);
+    }
+
     create() {
         var entity = document.createElement('div');
         entity.classList.add('entity');
@@ -42,6 +46,13 @@ class Entity {
         detail.appendChild(stats);
         entity.appendChild(detail);
 
+        entity.onmousedown = function(event) {
+            Entity.show_movement()
+        }
+        entity.onmouseup = function(event) {
+            grid.render();
+        }
+
         document.getElementById(this.position.x + '-' + this.position.y)
             .appendChild(entity);
         this.html_entity = entity;
@@ -49,6 +60,6 @@ class Entity {
     }
 
     static show_movement(x, y, n) {
-
+        console.log("show_movement");
     }
 }

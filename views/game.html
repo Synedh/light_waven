@@ -135,8 +135,32 @@
         <div class="action_points">6 / 6</div>
     </div>
 </div>
-<div class="challenge">
-    <div class="opponent_title">Enter player name to challenge him.</div>
-    <input type="text" id="opponent_input" class="opponent_input" placeholder="Opponent name">
-    <button onclick="challenge()">Challenge !</button>
+<div id="challenge" class="challenge">
+    <form name="challenge">
+        <div class="opponent_title">Enter player name to challenge him.</div>
+        <input id="opponent_input" type="text" class="opponent_input" {% if user==null %}disabled{% else %} placeholder="Opponent name" {% endif %} name="opponent" required>
+        <input id="submit_challenge" type="submit" class="submit_challenge" value="Challenge !" {% if user==null %}disabled{% endif %}>
+    </form>
+    <div id="challenge_modal" class="modal">
+        <div class="modal_content">
+            <div class="modal-body">
+                <div>Waiting for your opponent to answer.</div>
+                <div>Waiting...</div>
+            </div>
+            <div class="modal-footer">
+                <input type="submit" class="content" value="CANCEL" onclick="challenge_cancel()">
+            </div>
+        </div>
+    </div>
+    <div id="battle_modal" class="modal">
+        <div class="modal_content">
+            <div class="modal-body">
+                <div><span id="modal_challenger_name"></span> wants to challenge you.</div>
+            </div>
+            <div class="modal-footer flex">
+                <input type="submit" class="content" value="DECLINE" onclick="challenge_cancel()">
+                <input type="submit" class="content" value="ACCEPT" onclick="challenge_accept()">
+            </div>
+        </div>
+    </div>
 </div>
