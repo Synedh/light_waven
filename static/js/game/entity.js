@@ -46,8 +46,9 @@ class Entity {
         detail.appendChild(stats);
         entity.appendChild(detail);
 
+        var entity_pers = this;
         entity.onmousedown = function(event) {
-            Entity.show_movement()
+            grid.display_movement(entity_pers.position.x, entity_pers.position.y, entity_pers.currentMp);
         }
         entity.onmouseup = function(event) {
             grid.render();
@@ -57,9 +58,5 @@ class Entity {
             .appendChild(entity);
         this.html_entity = entity;
         return entity;
-    }
-
-    static show_movement(x, y, n) {
-        console.log("show_movement");
     }
 }
