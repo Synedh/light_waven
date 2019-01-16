@@ -1,0 +1,132 @@
+.chatbox {
+    display: flex;
+    flex-direction: column;
+    background-color: white;
+    border: 1px solid black;
+    z-index: 1;
+    height: 100%;
+    width: 100%;
+}
+
+.chan_list {
+    position: absolute;
+    right: 0;
+    top: 18px;
+    padding: 4px;
+    border: 1px solid black;
+    background: white;
+    font-size: 14px;
+}
+
+.chan_list .chan {
+    text-align: left;
+    cursor: pointer;
+    margin: 2px;
+}
+
+.tabs-wrapper {
+    display: flex;
+    font-size: 15px;
+    border-bottom: 1px solid black;
+}
+
+.tabs-wrapper button {
+    flex: 0 0 auto;
+    padding: 0 5px 0 5px;
+    height: 100%;
+    border: none;
+    background: none;
+}
+
+.tabs-wrapper .left_buttons {
+    flex: 0;
+    display: flex;
+}
+
+.tabs-wrapper .left_buttons * {
+    border-right: 1px solid black;
+    padding-bottom: 1px;
+}
+
+.tabs-wrapper .right_buttons {
+    flex: 0;
+    display: flex;
+}
+
+.tabs-wrapper .right_buttons button {
+    border-left: 1px solid black;
+    padding-bottom: 1px;
+}
+
+.tabs-wrapper button:hover {
+    cursor: pointer;
+}
+
+.tabs-wrapper .right_buttons .chan_list .chan:hover {
+    cursor: pointer;
+}
+
+.tabs-wrapper .tabs {
+    flex: 1;
+    display: flex;
+    overflow: hidden;
+}
+
+.tabs-wrapper .tabs .tab {
+    display: flex;
+    border-right: 1px solid black;
+}
+
+.tabs-wrapper .tabs .tab.current {
+    background-color: lightgrey;
+}
+
+.tabs-wrapper .tabs .tab .name {
+    padding: 0 5px 0 5px; 
+}
+
+.tabs-wrapper .tabs .tab .name:hover {
+    cursor: pointer;
+}
+
+.tabs-wrapper .tabs .tab .close {
+    padding: 0 5px 1px 0;
+    height: 100%;
+    border: none;
+    background: none;
+}
+
+.messages-wrapper {
+    flex: 1;
+    display: flex;
+    overflow: auto;
+}
+
+.messages {
+    padding: 3px;
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+}
+
+.messages .message {
+    padding: 2px;
+    overflow-wrap: break-word;
+}
+
+.messages .message:first-child {
+    border: none;
+}
+
+.typebox {
+    display: flex;
+    border-top: 1px solid black;
+}
+
+.typebox input {
+    padding: 5px;
+    width: 100%;
+    border: none;
+    font-family: inherit;
+    font-size: inherit;
+}

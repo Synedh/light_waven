@@ -2,7 +2,7 @@
 
 var mongoose    = require('mongoose'),
     User        = mongoose.model('User'),
-    req_tools   = require('../tools/request_tools');
+    reqTools    = require('../tools/requestTools');
 
 exports.list_all_users = function(req, res) {
     User.find(req.query, 'login email connected used_ips created_on last_connection date', function(err, user) {
@@ -60,11 +60,11 @@ exports.login = function(req, res) {
             if (err)
                 res.json(err);
             if (okPass) {
-                var ipIndex = user.used_ips.indexOf(req_tools.getClientIp(req));
+                var ipIndex = user.used_ips.indexOf(reqTools.getClientIp(req));
                 if (ipIndex >= 0) {
                      user.used_ips.splice(ipIndex, 1);
                 }
-                user.used_ips.push(req_tools.getClientIp(req));
+                user.used_ips.push(reqTools.getClientIp(req));
                 user.connected = true;
                 user.save();
                 req.session.user = {
@@ -85,7 +85,7 @@ exports.register = function(req, res) {
         if (err)
             res.json({ error: err });
         else {
-            user.used_ips.push(req_tools.getClientIp(req));
+            user.used_ips.push(reqTools.getClientIp(req));
             user.connected = true;
             user.save();
             req.session.user = {

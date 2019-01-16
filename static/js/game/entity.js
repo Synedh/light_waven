@@ -14,12 +14,14 @@ class Entity {
     }
 
     move(x, y) {
+        socket.emit('move', { entity: this, cell: { x: x, y: y }});
         grid.move(this, x, y);
     }
 
     create() {
         var entity = document.createElement('div');
         entity.classList.add('entity');
+        entity.classList.add('noselect');
         var entity_name = document.createElement('div');
         entity_name.classList.add('entity_name');
         entity.appendChild(entity_name)
@@ -48,10 +50,7 @@ class Entity {
 
         var entity_pers = this;
         entity.onmousedown = function(event) {
-            grid.display_movement(entity_pers.position.x, entity_pers.position.y, entity_pers.currentMp);
-        }
-        entity.onmouseup = function(event) {
-            grid.render();
+            grid.display_movement(entity_pers.position.x, entity_pers.position.y, entity_pers);
         }
 
         document.getElementById(this.position.x + '-' + this.position.y)

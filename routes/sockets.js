@@ -5,7 +5,10 @@ module.exports = function(app, io) {
           User              = mongoose.model('User'),
           Message           = mongoose.model('Message'),
           userController    = require('../controllers/userController'),
-          dates             = require('../tools/dates');
+          dates             = require('../tools/dates'),
+          logs              = require('../tools/logs'),
+          requestTools      = require('../tools/requestTools'),
+          gameManager       = require('../game/gameManager');
 
     io.on('connect', function(socket) {
         var this_user_id = null;
@@ -23,9 +26,9 @@ module.exports = function(app, io) {
                     user.last_socket_id = socket.id;
                     user.connected = true;
                     user.save();
-                    console.log(dates.logDate(new Date()) + " " + socket.handshake.address + ' has connected has ' + user.login);
+                    logs.logConnection(new Date(), socket.handshake.address + ' has connected has ' + user.login);
                 } else {
-                    console.log(dates.logDate(new Date()) + " " + socket.handshake.address + ' has connected');
+                    logs.logConnection(new Date(), socket.handshake.address + ' has connected');
                 }
             })
         });
@@ -35,9 +38,9 @@ module.exports = function(app, io) {
                 if (!err && user) {
                     user.connected = false;
                     user.save();
-                    console.log(dates.logDate(new Date()) + " " + user.login + ' has disconnected for reason : ' + reason);
+                    logs.logConnection(new Date(), user.login + ' has disconnected for reason : ' + reason);
                 } else {
-                    console.log(dates.logDate(new Date()) + " " + socket.handshake.address + ' has disconnected for reason : ' + reason);
+                    logs.logConnection(new Date(), socket.handshake.address + ' has disconnected for reason : ' + reason);
                 }
             });
         });
@@ -57,9 +60,9 @@ module.exports = function(app, io) {
                     })
                     new_message.save(function(err, message) {
                         if (err)
-                            console.log(err);
+                            logs.logChat(new Date(), msg['channel_name'], err);
                         else {
-                            console.log(dates.logDate(message.date) + " " + user.login + " : " + message);
+                            logs.logChat(message.date, msg['channel_name'], user.login + " : \"" + message.content + "\"");
                             io.to(msg['channel_name']).emit(
                                 'chat_message', 
                                 {
@@ -103,48 +106,73 @@ module.exports = function(app, io) {
             io.to(id).emit('join', chan);
         }); 
 
-        socket.on('challenge', function(values) {
-            console.log(dates.logDate(new Date()) + " " + values.challenger + " challenge " + values.opponent);
-            User.findOne({'login': { $regex: new RegExp(values.opponent.toLowerCase(), "i") }}, function(err, user) {
+        socket.on('challenge', function(challenger, opponent) {
+            User.findOne({'login': { $regex: new RegExp(opponent.toLowerCase(), "i") }}, function(err, user) {
+                var battle_id = requestTools.generateCustomId();
                 if (err) {
-                    socket.emit('challenge_cancel', { error: err });
+                    logs.logBattle(new Date(), battle_id, "Error : " + err);
+                    socket.emit('challenge_cancel', err);
                 } else if (!user) {
-                    socket.emit('challenge_cancel', { error: 'User ' + values.opponent + ' does not exists.' });
-                } else if (user.login == values.challenger) {
-                    socket.emit('challenge_cancel', { error: 'You cannot challenge yourself !' });
+                    logs.logBattle(new Date(), battle_id, challenger + ' : user ' + opponent + ' does not exists.');
+                    socket.emit('challenge_cancel', challenger + ' : user ' + opponent + ' does not exists.');
+                    socket.leave(battle_id);
+                } else if (user.login == challenger) {
+                    logs.logBattle(new Date(), battle_id, challenger + ' : you cannot challenge yourself !');
+                    socket.emit('challenge_cancel', challenger + ' : you cannot challenge yourself !');
+                    socket.leave(battle_id);
                 } else if (!user.connected) {
-                    socket.emit('challenge_cancel', { error: 'User ' + values.opponent + ' is not connected.' });
+                    logs.logBattle(new Date(), battle_id, challenger + ' : user ' + opponent + ' is not connected.');
+                    socket.emit('challenge_cancel', challenger + ' : user ' + opponent + ' is not connected.');
+                    socket.leave(battle_id);
                 } else {
-                    console.log(dates.logDate(new Date()) + " " + values.challenger + " challenge " + user.login);
+                    logs.logBattle(new Date(), battle_id, challenger + " challenge " + user.login);
+                    socket.join(battle_id);
                     socket.to(user.last_socket_id)
-                        .emit('challenge', { username: values.challenger })
+                        .emit('challenge', challenger, battle_id);
                 }
             });
         });
 
-        socket.on('challenge_cancel', function(values) {
-            User.findOne({'login': { $regex: new RegExp(values.opponent.toLowerCase(), "i") }}, function(err, user) {
+        socket.on('challenge_cancel', function(user, opponent, battle_id) {
+            User.findOne({'login': { $regex: new RegExp(opponent.toLowerCase(), "i") }}, function(err, opponent) {
                 if (err) {
-                    socket.to(user.last_socket_id)
-                        .emit('challenge_cancel', { error: err });
+                    logs.logBattle(new Date(), battle_id, "Error : " + err);
+                    socket
+                        .emit('challenge_cancel', err);
+                    socket.to(opponent.last_socket_id)
+                        .emit('challenge_cancel', err);
                 } else {
-                    socket.to(user.last_socket_id)
-                        .emit('challenge_cancel', { message: 'User cancelled challenge.' });
+                    socket.leave(battle_id);
+                    logs.logBattle(new Date(), battle_id, user + " cancelled challenge.");
+                    socket
+                        .emit('challenge_cancel', null, user + ' cancelled challenge.');
+                    socket.to(opponent.last_socket_id)
+                        .emit('challenge_cancel', null, user + ' cancelled challenge.');
                 }
             });
         });
 
-        socket.on('challenge_accept', function(values) {
-            User.findOne({'login': { $regex: new RegExp(values.opponent.toLowerCase(), "i") }}, function(err, user) {
+        socket.on('challenge_accept', function(user, opponent, battle_id) {
+            User.findOne({'login': { $regex: new RegExp(opponent.toLowerCase(), "i") }}, function(err, opponent) {
                 if (err) {
-                    socket.to(user.last_socket_id)
-                        .emit('challenge_cancel', { error: err });
+                    logs.logBattle(new Date(), battle_id, "Error : " + err);
+                    socket
+                        .emit('challenge_cancel', err);
+                    socket.to(opponent.last_socket_id)
+                        .emit('challenge_cancel', err);
                 } else {
-                    console.log(dates.logDate(new Date()) + " " + values.opponent + " started a battle against " + values.challenger)
-                    socket.to(user.last_socket_id)
-                        .emit('challenge_accept', { message: true });
+                    logs.logBattle(new Date(), battle_id, user + " started a battle against " + opponent.login);
+                    socket.join(battle_id, function() {
+                        io.to(battle_id)
+                            .emit('challenge_accept', battle_id);
+                    });
                 }
             });
+        });
+
+        socket.on('move', function(battle_id, entity, cell) {
+            socket.to(battle_id)
+                .emit(gameManager.move(entity, cell));
         });
     });
 };

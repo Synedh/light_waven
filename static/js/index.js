@@ -30,3 +30,9 @@ function post(url, data, next) {
 window.onload = function() {
     loadChatMessages();
 }
+
+window.onmouseup = function() {
+    if (grid) {
+        grid.render();
+    }
+}
