@@ -1,6 +1,10 @@
 'use strict';
 
-exports.move = function(entity, cell) {
-    /* TODO : CHECK MOVE */
-    return { entity: entity, cell: cell };
+const logs              = require('../tools/logs');
+
+
+exports.move = function(battle, entity, cell) {
+    /* TODO : CHECK MOVE */ 
+    battle.emit('move', entity, cell);
+    return true;
 }

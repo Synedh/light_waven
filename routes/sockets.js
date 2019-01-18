@@ -171,8 +171,10 @@ module.exports = function(app, io) {
         });
 
         socket.on('move', function(battle_id, entity, cell) {
-            socket.to(battle_id)
-                .emit(gameManager.move(entity, cell));
+            if (gameManager.move(socket.to(battle_id), entity, cell))
+                logs.logBattle(new Date(), battle_id, "move");
+            // socket.to(battle_id)
+            //     .emit('move', gameManager.move(entity, cell));
         });
     });
 };

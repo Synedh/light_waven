@@ -1,3 +1,5 @@
-socket.on('move', function(content) {
-    grid.move(content.entity, content.cell.x, content.cell.y);
+socket.on('move', function(entity, cell) {
+    console.log(entity);
+    console.log(cell);
+    grid.move(entity, cell.x, cell.y);
 });

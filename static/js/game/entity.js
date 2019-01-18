@@ -15,7 +15,7 @@ class Entity {
 
     move(x, y) {
         socket.emit('move', { entity: this, cell: { x: x, y: y }});
-        grid.move(this, x, y);
+        // grid.move(this, x, y);
     }
 
     create() {
